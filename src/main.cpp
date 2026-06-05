@@ -1,14 +1,10 @@
 #include <Arduino.h>
-#include <ESP32Servo.h>
 
 // ===== PIN =====
 #define SENSOR_PIN 34
-#define SERVO_PIN 25
 #define POMPA_PIN 18
-#define VALVE_PIN 27
+#define VALVE_PIN 21
 #define FLOW_SENSOR 15
-
-Servo myServo;
 
 // ===== SENSOR DEBIT =====
 volatile int pulseCount = 0;
@@ -23,6 +19,7 @@ void IRAM_ATTR countPulse() {
 }
 
 void setup() {
+
   Serial.begin(115200);
 
   pinMode(SENSOR_PIN, INPUT);
@@ -38,8 +35,6 @@ void setup() {
     countPulse,
     FALLING
   );
-
-  myServo.attach(SERVO_PIN);
 
   // kondisi awal
   digitalWrite(POMPA_PIN, LOW);
@@ -59,7 +54,7 @@ void loop() {
 
   delay(1000);
 
-  // rumus umum YF-S201
+  // rumus umum sensor debit
   flowRate = pulseCount / 7.5;
 
   Serial.print("Debit Air: ");
@@ -71,9 +66,8 @@ void loop() {
 
     Serial.println("Air RENDAH");
 
-    myServo.write(45);               // buka pintu
-    digitalWrite(POMPA_PIN, HIGH);  // pompa ON
-    digitalWrite(VALVE_PIN, LOW);   // valve OFF
+    digitalWrite(POMPA_PIN, HIGH); // pompa ON
+    digitalWrite(VALVE_PIN, LOW);  // valve OFF
   }
 
   // ===== KONDISI AIR TINGGI =====
@@ -81,7 +75,6 @@ void loop() {
 
     Serial.println("Air TINGGI");
 
-    myServo.write(0);                // tutup pintu
     digitalWrite(POMPA_PIN, LOW);   // pompa OFF
     digitalWrite(VALVE_PIN, HIGH);  // valve ON
   }
@@ -90,3 +83,4 @@ void loop() {
 }
 
 //Notes: Everything is built using AI
+//Additional Note: at first we want to use the gate (indicated by servo), but it's to hard so we decide to delete it
