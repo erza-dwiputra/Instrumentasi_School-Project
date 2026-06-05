@@ -28,5 +28,5 @@ Based on the project design, the following instrumentation components are integr
    Acts as an electronically controlled valve or "faucet" to hold back, regulate, or release the water/air inside the rubber dam model.
 
 ## 📁 Repository Structure
-* `/src` : Contains the main source code (.ino) for sensor processing and actuator controls.
+* `/src` : Contains the main source code (.cpp) for sensor processing and actuator controls.
 * `/hardware` : Schematic diagrams, circuit layouts, and component wiring guides.
